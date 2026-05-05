@@ -1,0 +1,11 @@
+{
+  "name": "website-cloner-frontend",
+  "version": "1.0.0",
+  "description": "Website Cloner Frontend - Extract any website and convert to HTML/CSS/JavaScript",
+  "private": true,
+  "scripts": {
+    "start": "python -m http.server 3000",
+    "dev": "python -m http.server 3000"
+  },
+  "dependencies": {}
+}

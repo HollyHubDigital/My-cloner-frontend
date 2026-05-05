@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "public": "public",
+  "builds": [
+    {
+      "src": "public/**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "public/index.html"
+    }
+  ],
+  "env": {
+    "REACT_APP_API_URL": "@api_url",
+    "REACT_APP_BACKEND_URL": "@backend_url"
+  }
+}
