@@ -250,6 +250,12 @@ function initializeApp() {
       console.log('  CSS size:', result.css?.length);
       console.log('  JS size:', result.js?.length);
       
+      if (!result.success) {
+        console.error('❌ ERROR:', result.error);
+        console.error('   Details:', result.details);
+        console.log('   Full response:', result);
+      }
+      
       if (result.success) {
         // Store the extracted files
         extractedFiles = {
