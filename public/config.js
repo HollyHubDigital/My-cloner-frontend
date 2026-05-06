@@ -7,7 +7,10 @@
   // Allow manual override via global before this script runs: `window.__API_URL__ = 'https://api...'`
   const globalApi = (typeof window !== 'undefined' && window.__API_URL__) ? window.__API_URL__ : null;
 
-  const API_URL = globalApi || metaApi || (window.location.hostname === 'localhost' ? 'http://localhost:3000' : window.location.origin);
+  // Production backend URL
+  const PRODUCTION_API = 'https://my-cloner-backend.vercel.app';
+
+  const API_URL = globalApi || metaApi || (window.location.hostname === 'localhost' ? 'http://localhost:3000' : PRODUCTION_API);
 
   window.API_CONFIG = {
     apiUrl: API_URL,
