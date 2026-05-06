@@ -198,10 +198,13 @@
                     </div>
                     <button 
                         type="submit"
-                        class="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-lg hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
                         id="cloneBtn"
+                        class="px-8 py-3 text-white font-bold rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+                        style="background: linear-gradient(90deg,#7c3aed 0%,#ec4899 100%); box-shadow: 0 6px 18px rgba(124,58,237,0.22); border: 1px solid rgba(124,58,237,0.12); display:flex; align-items:center; gap:8px;"
                     >
-                        <i class="fas fa-clone mr-2"></i><span id="btnText">Clone Website</span>
+                        <i class="fas fa-clone mr-2"></i>
+                        <span id="btnText">Clone Website</span>
+                        <span id="btnProgress" style="display:none; margin-left:8px; font-weight:600; font-size:0.95rem;">0%</span>
                     </button>
                 </form>
 
@@ -302,6 +305,7 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+        <script src="config.js"></script>
+        <script src="script.js"></script>
 </body>
 </html>

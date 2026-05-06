@@ -24,6 +24,18 @@ function initializeApp() {
     return;
   }
 
+  // Progress animation state variables
+  let progressInterval = null;
+  let progressValue = 0;
+  let currentStage = 0;
+  const stages = [
+    { name: 'Analyzing', target: 15 },
+    { name: 'Fetching', target: 40 },
+    { name: 'Rendering', target: 70 },
+    { name: 'Inlining assets', target: 90 },
+    { name: 'Finalizing', target: 98 }
+  ];
+
   // Tab Navigation
   tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -215,11 +227,13 @@ function initializeApp() {
     
     // Reset UI
     cloneBtn.disabled = true;
-    btnText.textContent = 'Processing...';
     statusMessage.classList.add('hidden');
+    // Start progress animation
+    startProgress();
     
     try {
-      const response = await fetch('/api/clone', {
+      const apiCloneUrl = (window.API_CONFIG && window.API_CONFIG.endpoints && window.API_CONFIG.endpoints.clone) || '/api/clone';
+      const response = await fetch(apiCloneUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -269,9 +283,50 @@ function initializeApp() {
       showStatus(`❌ Failed to clone website: ${error.message}`, 'error');
     } finally {
       cloneBtn.disabled = false;
-      btnText.textContent = 'Clone Website';
+      stopProgress();
     }
   });
+
+  // Progress animation helper functions
+  function startProgress() {
+    const progressEl = document.getElementById('btnProgress');
+    const textEl = document.getElementById('btnText');
+    if (!progressEl || !textEl) return;
+    progressValue = 0;
+    currentStage = 0;
+    progressEl.style.display = 'inline-block';
+    textEl.textContent = stages[0].name;
+    progressEl.textContent = '0%';
+
+    progressInterval = setInterval(() => {
+      // gently increase progress
+      const stage = stages[Math.min(currentStage, stages.length - 1)];
+      const step = Math.max(1, Math.floor(Math.random() * 4));
+      progressValue = Math.min(stage.target, progressValue + step);
+      progressEl.textContent = `${progressValue}%`;
+
+      // once we reach the stage target, advance to next stage
+      if (progressValue >= stage.target) {
+        currentStage = Math.min(currentStage + 1, stages.length - 1);
+        const next = stages[Math.min(currentStage, stages.length - 1)];
+        document.getElementById('btnText').textContent = next.name;
+      }
+    }, 400);
+  }
+
+  function stopProgress(finalText) {
+    const progressEl = document.getElementById('btnProgress');
+    const textEl = document.getElementById('btnText');
+    if (progressInterval) {
+      clearInterval(progressInterval);
+      progressInterval = null;
+    }
+    if (progressEl) {
+      progressEl.textContent = '100%';
+      setTimeout(() => { progressEl.style.display = 'none'; }, 700);
+    }
+    if (textEl) textEl.textContent = finalText || 'Clone Website';
+  }
 
   // Handle Enter key in URL input
   urlInput.addEventListener('keypress', (e) => {
